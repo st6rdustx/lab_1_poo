@@ -1,15 +1,25 @@
 public class Pessoa {
-    String primeiroNome;
-    String segundoNome;
-    int numeroContribuinte;
-    double salarioBruto;
+    private String primeiroNome;
+    private String segundoNome;
+    private int numeroContribuinte;
+    private double salarioBruto;
+
+    public Pessoa() {
+    }
+
+    public Pessoa(String primeiroNome, String segundoNome, int numeroContribuinte, double salarioBruto) {
+        this.primeiroNome = primeiroNome;
+        this.segundoNome = segundoNome;
+        this.numeroContribuinte = numeroContribuinte;
+        this.salarioBruto = salarioBruto;
+    }
 
     public void definirPrimeiroNome(String novoPrimeiroNome) {
-        primeiroNome = novoPrimeiroNome;
+        this.primeiroNome = novoPrimeiroNome;
     }
 
     public void definirSegundoNome(String novoSegundoNome) {
-        segundoNome = novoSegundoNome;
+        this.segundoNome = novoSegundoNome;
     }
 
     public String obterNome() {
@@ -17,43 +27,42 @@ public class Pessoa {
     }
 
     public void definirNumeroContribuinte(int novoNumeroContribuinte) {
-        numeroContribuinte = novoNumeroContribuinte;
+        this.numeroContribuinte = novoNumeroContribuinte;
     }
 
     public void definirSalarioBruto(double novoSalarioBruto) {
-        salarioBruto = novoSalarioBruto;
+        this.salarioBruto = novoSalarioBruto;
     }
 
     public String obterDadosPessoais() {
-        return "Nome: " + obterNome() + "\n" +
-                "NIF: " + numeroContribuinte + "\n" +
-                "Salário Bruto: " + salarioBruto + "€\n" +
-                "Salário Líquido: " + calcularSalarioLiquido() + "€";
+        return String.format("Nome: %s%nNIF: %d%nSalário Bruto: %.2f€%nSalário Líquido: %.2f€", 
+                obterNome(), numeroContribuinte, salarioBruto, calcularSalarioLiquido());
     }
 
     public double calcularSalarioLiquido() {
-        double desconto;
-
+        double taxaDesconto = determinarTaxaDesconto(salarioBruto);
+        return salarioBruto * (1 - taxaDesconto);
+    }
+    
+    private double determinarTaxaDesconto(double salarioBruto) {
         if (salarioBruto < 1550) {
-            desconto = 0;
+            return 0;
         } else if (salarioBruto == 1550) {
-            desconto = 50;
+            return 50 / salarioBruto;
         } else if (salarioBruto > 1550 && salarioBruto < 2050) {
-            desconto = salarioBruto * 0.035;
+            return 0.035;
         } else if (salarioBruto >= 2050 && salarioBruto < 2100) {
-            desconto = salarioBruto * 0.038;
+            return 0.038;
         } else if (salarioBruto >= 2100 && salarioBruto < 2150) {
-            desconto = salarioBruto * 0.041;
+            return 0.041;
         } else if (salarioBruto >= 2150 && salarioBruto < 2500) {
-            desconto = salarioBruto * 0.06;
+            return 0.06;
         } else if (salarioBruto >= 2500 && salarioBruto < 3500) {
-            desconto = salarioBruto * 0.08;
+            return 0.08;
         } else if (salarioBruto >= 3500 && salarioBruto < 4200) {
-            desconto = salarioBruto * 0.09;
+            return 0.09;
         } else {
-            desconto = salarioBruto * 0.10;
+            return 0.10;
         }
-
-        return salarioBruto - desconto;
     }
 }
